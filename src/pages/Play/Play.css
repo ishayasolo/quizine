@@ -1,0 +1,8 @@
+/* .qna {} */
+
+.play--box {
+	background-image: url(../../img/q-and-a-page.png);
+	display: flex;
+	flex-direction: column;
+	gap: 2rem;
+}

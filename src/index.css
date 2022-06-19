@@ -5,7 +5,35 @@
 body {
   margin: 0;
   padding: 0;
+	font-family: "Montserrat", sans-serif;
 }
+
+.game {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	min-height: 100vh;
+	justify-content: center;
+	background-color: #F5F7FB;
+	padding: 1rem;
+}
+
+.game--box {
+	background-size: cover;
+	background-position: top right;
+	border: 5px solid #DEEBF8;
+	width: 100%;
+	max-width: 700px;
+	max-height: fit-content;
+	border-radius: 24px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+}
+
 
 /* @keyframes spin {
   from {

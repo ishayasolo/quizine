@@ -1,0 +1,37 @@
+/* .app {} */
+
+.app--box {
+	background-image: url(../img/intro-page.png);
+}
+
+.app--box-title {
+	color: #293264;
+}
+
+.app--box-description {
+	color: #293264;
+	max-width: 350px;
+	text-align: center;
+	font-size: 20px;
+	line-height: 1.5;
+}
+
+.app--box-cta {
+	padding: 1rem 3rem;
+	border-radius: 12px;
+	background-color: #293264;
+	color: #fff;
+	text-decoration: none;
+}
+
+.low {
+	font-size: 16px;
+	font-weight: 300;
+}
+
+.ishaya {
+	text-decoration: dashed;
+	font-weight: 500;
+	color: #293264;
+	border-bottom: 1.5px dashed #293264;
+}
