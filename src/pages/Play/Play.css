@@ -6,3 +6,15 @@
 	flex-direction: column;
 	gap: 2rem;
 }
+
+.play--validator {
+	font-family: 'Montserrat', sans-serif;
+	font-size: 16px;
+	padding: 0.75rem 1.5rem;
+	border-radius: 10px;
+	border: none;
+	background-color: #4D5B9E;
+	color: #F5F7FB;
+	font-weight: 600;
+	cursor: pointer;
+}
