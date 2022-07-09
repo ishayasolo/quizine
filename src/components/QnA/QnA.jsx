@@ -4,13 +4,10 @@ import { nanoid } from 'nanoid'
 
 import './QnA.css'
 
-const QnA = ({
-	quizData,
-	setSelectedAnswer
-}) => {
-	const [quiz, setQuiz] = useState(quizData)
+const QnA = (props) => {
+	const [quiz, setQuiz] = useState(props.quizData)
 
-	const toggleIsSelected = (event, id) => {
+	const toggleIsSelected = (id) => {
 		setQuiz(quiz => ({
 			...quiz,
 			options: quiz.options.map(option => {
@@ -21,7 +18,7 @@ const QnA = ({
 					...option,
 					isSelected: false
 				}
-			}),
+			})
 		}))
 	}
 
@@ -31,15 +28,12 @@ const QnA = ({
 				className='qna--question'
 				dangerouslySetInnerHTML={{__html: quiz.question}}
 			/>
-			<div
-				className="qna--options"
-				onClick={setSelectedAnswer}
-			>
-				{quiz.options.map(option => 
+			<div className="qna--options">
+				{quiz.options.map(option =>
 					<button
 						key={nanoid()}
 						className={`qna--option ${option.isSelected && 'qna--option-clicked'}`}
-						onClick={(event) => toggleIsSelected(event, option.id)}
+						onClick={() => toggleIsSelected(option.id)}
 						dangerouslySetInnerHTML={{__html: option.value}}
 					/>
 				)}
