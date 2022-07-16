@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react'
+import { nanoid } from 'nanoid';
 
-import { nanoid } from 'nanoid'
-
-import QnA from '../../components/QnA/QnA'
-import quizzesData from '../../data'
-import './Play.css'
+import QnA from '../../components/QnA/QnA';
+import quizzesData from '../../data';
+import './Play.css';
 
 const Play = () => {
 	const initializeQuizzes = (quizzesData) => {
@@ -12,17 +11,19 @@ const Play = () => {
 
 		for (let i = 0; i < quizzesData.length; i++) {
 			quizzes.push({
+				id: nanoid(),
 				question: quizzesData[i].question,
-				correctAnswer: quizzesData[i].correct_answer,
-				selectedAnswer: null,
 				options: [
 					...quizzesData[i].incorrect_answers,
 					quizzesData[i].correct_answer
 				].sort(() => Math.random() - 0.5).map(option => ({
-						id: nanoid(),
-						value: option,
-						isSelected: false,
-					}))
+					id: nanoid(),
+					value: option,
+					isSelected: false,
+					// isCorrect: (option === quizzesData[i].correct_answer) ? true : false,
+				})),
+				correctAnswer: quizzesData[i].correct_answer,
+				selectedAnswer: null,
 			})
 		}
 
@@ -30,6 +31,8 @@ const Play = () => {
 	}
 
 	const [quizzes, setQuizzes] = useState(initializeQuizzes(quizzesData));
+	const [score, setScore] = useState(0)
+
 
 	// const [quizzes, setQuizzes] = useState([])
 
@@ -50,6 +53,7 @@ const Play = () => {
 	// 	console.log(quizzes)
 	// }
 
+	const addScore = () => {}
 	const validateAnswers = () => {}
 
 	return (
@@ -57,8 +61,9 @@ const Play = () => {
 			<div className='play--box game--box'>
 				{quizzes.map(quiz =>
 					<QnA
-						key={nanoid()}
+						key={quiz.id}
 						quizData={quiz}
+						score={score}
 					/>
 				)}
 				<button
@@ -69,7 +74,7 @@ const Play = () => {
 				</button>
 			</div>
 		</div>
-	)
+	);
 }
 
 export default Play
