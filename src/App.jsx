@@ -1,12 +1,13 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React, { useState } from 'react'
 
-import './App.css'
+import './App.css';
+import Play from './Play/Play';
 
 const App = () => {
+	const [play, setPlay] = useState(false);
 
 	return (
-		<div className='app game'>
+		!play ? <div className='app game'>
 			<div className="app--box game--box">
 				<h1 className="app--box-title">Quizine</h1>
 				<p className="app--box-description">
@@ -16,15 +17,14 @@ const App = () => {
 					Made with React <br />
 					by <a href="https://linkedin.com/in/ishayasolo" className="ishaya">Ishaya Solomon</a>
 				</p>
-				<Link
-					to="/play"
+				<button
 					className="app--box-cta"
-					// onClick={initializeQuiz}
+					onClick={() => setPlay(play => !play)}
 				>
 					Start Quiz
-				</Link>
+				</button>
 			</div>
-		</div>
+		</div> : <Play />
 	)
 }
 

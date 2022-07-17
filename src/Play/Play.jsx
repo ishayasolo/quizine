@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { nanoid } from 'nanoid';
 
-import QnA from '../../components/QnA/QnA';
-import quizzesData from '../../data';
+import QnA from '../QnA/QnA';
+import quizzesData from '../data';
 import './Play.css';
 
 const Play = () => {
+	const [quizzes, setQuizzes] = useState([]);
+	// const [score, setScore] = useState(0);
+
 	const initializeQuizzes = (quizzesData) => {
 		let quizzes = [];
 
@@ -30,30 +33,26 @@ const Play = () => {
 		return quizzes;
 	}
 
-	const [quizzes, setQuizzes] = useState(initializeQuizzes(quizzesData));
-	const [score, setScore] = useState(0)
-
-
-	// const [quizzes, setQuizzes] = useState([])
+	useEffect(() => {
+		setQuizzes(initializeQuizzes(quizzesData))
+	}, []);
 
 	// useEffect(() => {
 	// 	fetch("https://opentdb.com/api.php?amount=5&type=multiple")
 	// 		.then(res => res.json())
 	// 		.then(data => initializeQuizzes(data))
-	// }, [])
+	// }, []);
 
-	// const setSelectedAnswer = (quiz, {target}) => {
-	// 	(
-	// 		target.className.split(' ')[0] === 'qna--option' &&
-	// 		target.className.split(' ')[1] !== 'qna--option-clicked' &&
-	// 		target.type === 'submit'
-	// 	) ? quiz.selectedAnswer = target.innerText
-	// 		: quiz.selectedAnswer = ''
+	const toggleIsSelected = (id, quizId) => {
+		quizzes.map(quiz => (quiz.id === quizId && setQuizzes(quizzes => quizzes.map(quiz => ({
+			...quiz,
+			options: quiz.options.map(option => (option.id === id ? {
+				...option,
+				isSelected: !option.isSelected,
+			} : option)),
+		})))));
+	}
 
-	// 	console.log(quizzes)
-	// }
-
-	const addScore = () => {}
 	const validateAnswers = () => {}
 
 	return (
@@ -62,8 +61,9 @@ const Play = () => {
 				{quizzes.map(quiz =>
 					<QnA
 						key={quiz.id}
+						quizId={quiz.id}
 						quizData={quiz}
-						score={score}
+						toggleIsSelected={toggleIsSelected}
 					/>
 				)}
 				<button
