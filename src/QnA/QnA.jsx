@@ -13,12 +13,7 @@ const QnA = (props) => {
 
 	// 	return answer;
 	// }
-	const selectedOption = {
-		backgroundColor: '#D6DBF5',
-		borderColor: '#D6DBF5',
-	}
-
-
+	
 	return (
 		<div className='qna'>
 			<p

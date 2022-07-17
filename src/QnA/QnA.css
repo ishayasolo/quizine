@@ -31,3 +31,8 @@
 	transition: 0.5s;
 	cursor: pointer;
 }
+
+.qna--option-clicked {
+	background-color: #D6DBF5;
+	border-color: #D6DBF5;
+}
