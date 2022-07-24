@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 
 import './App.css';
-import Play from './Play/Play';
+import Play from './components/Play/Play';
 
 const App = () => {
 	const [play, setPlay] = useState(false);
