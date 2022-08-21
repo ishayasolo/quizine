@@ -1,78 +1,127 @@
-// import { useState, useEffect } from 'react'
-import QnA from '../Question/Question';
-import { useSelector } from 'react-redux';
+import React, { useState, useEffect } from 'react'
+import { nanoid } from 'nanoid';
+
+// import quiz from '../../data';
+import QuestionAndOptions from '../QuestionAndOptions/QuestionAndOptions';
 import './Play.css';
+import Confetti from 'react-confetti';
 
 const Play = () => {
-	// const [revealAnswers, setRevealAnswers] = useState(false);
+	const [quiz, setQuiz] = useState([])
+	const [score, setScore] = useState(0)
+	const [checkedQuestions, setCheckedQuestions] = useState(0)
+	const [isChecked, setIsChecked] = useState(false)
+	const [startOver, setStartOver] = useState(false)
 
-	// useEffect(() => {
-	// 	setQuiz(initializeQuiz(quizData))
-	// }, []);
+	const customQuizData = ({ results }) => {
+		let quiz = [];
 
-	// useEffect(() => {
-	// 	fetch("https://opentdb.com/api.php?amount=5&type=multiple")
-	// 		.then(res => res.json())
-	// 		.then(data => initializequiz(data))
-	// }, []);
+		results.forEach(item => {
+			quiz.push({
+				id: nanoid(),
+				question: item.question,
+				options: [
+					...item.incorrect_answers,
+					item.correct_answer
+				].sort(() => Math.random() - 0.5).map(option => ({
+					id: nanoid(),
+					value: option,
+					isSelected: false,
+					isCorrectAnswer: option === item.correct_answer,
+					isRightChoice: false,
+					isWrongChoice: false,
+					isChecked: false,
+				})),
+				correctAnswer: item.correct_answer,
+				selectedAnswer: null,
+			})
+		})
 
-	// const holdAnswer = (questionId, optionId) => {
-	// 	setQuiz(quiz => quiz.map(question => (
-	// 		question.id === questionId ? {
-	// 			...question,
-	// 			options: question.options.map(option => (option.id === optionId ? {
-	// 				...option,
-	// 				isSelected: !option.isSelected,
-	// 			} : {
-	// 				...option,
-	// 				isSelected: false,
-	// 			})),
-	// 		} : question
-	// 	)));
-	// }
+		return quiz
+	}
 
-	// const validateAnswers = () => setQuiz(quiz => quiz.map(question => ({
-	// 	...question,
-	// 	options: question.options.map(option => {
-	// 		if (option.isSelected && option.isCorrect)
-	// 			return {
-	// 				...option,
-	// 				isRightChoice: true,
-	// 				isChecked: true
-	// 			}
-	// 		else if (option.isSelected && !option.isCorrect)
-	// 			return {
-	// 				...option,
-	// 				isWrongChoice: true,
-	// 				isChecked: true
-	// 			}
-	// 		else
-	// 			return {
-	// 				...option,
-	// 				isChecked: true
-	// 			}
-	// 	})
-	// })));
+	useEffect(() => {
+		fetch("https://opentdb.com/api.php?amount=5&type=multiple")
+			.then(res => res.json())
+			.then(data => setQuiz(customQuizData(data)))
+	}, [startOver]);
 
-	const quiz = useSelector(state => state.quiz.quizQuestions);
+	console.log(quiz);
+
+	const toggleIsSelected = (optionId, questionId) => {
+		setQuiz(quiz => quiz.map(question => {
+			return (question.id === questionId) ? {
+				...question,
+				options: question.options.map(option => {
+					return (option.id === optionId) ? {
+						...option,
+						isSelected: !option.isSelected,
+						isRightChoice: option.isSelected && option.isCorrectAnswer,
+						isWrongChoice: option.isSelected && !option.isCorrectAnswer ? true : false,
+					} : {
+						...option,
+						isSelected: false,
+					}
+				}),
+			} : question
+		}))
+	}
+
+	const validateAnswers = () => {
+		setQuiz(quiz => quiz.map(question => ({
+			...question,
+			options: question.options.map(option => {
+				if (option.isSelected && option.isCorrectAnswer) {
+					setScore(score => score + 1)
+					return {
+						...option,
+						isRightChoice: true,
+						isChecked: true,
+					}
+				} else if (option.isSelected && !option.isCorrectAnswer) {
+					return {
+						...option,
+						isWrongChoice: true,
+						isChecked: true,
+					}
+				} else {
+					return {
+						...option,
+						isChecked: true,
+					}
+				}
+			})
+		})))
+		setIsChecked(true)
+
+		quiz.forEach(question => question.options.filter(option => option.isChecked))
+	}
 
 	return (
 		<div className="play game">
 			<div className='play--box game--box'>
 				{quiz.map(question =>
-					<QnA
+					<QuestionAndOptions
 						key={question.id}
-						question={question}
 						questionId={question.id}
+						questionData={question}
+						toggleIsSelected={toggleIsSelected}
+						isChecked={isChecked}
 					/>
 				)}
+				{isChecked ?
+				<div className='score-display'>
+					<p className="score-display--text">You scored {score}/{quiz.length} correct answers</p>
+					<button className="play-again" onClick={() => setStartOver(true)}>Play again</button>
+				</div> :
 				<button
-					className="play--validator"
-					onClick={() => {}}
+					className={`play--validator ${checkedQuestions < 5 && 'check-disabled'}`}
+					onClick={validateAnswers}
 				>
 					Check Answers
-				</button>
+				</button>}
 			</div>
+			{score === 5 && isChecked && <Confetti />}
 		</div>
 	);
 }

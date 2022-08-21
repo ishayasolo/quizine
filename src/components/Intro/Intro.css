@@ -1,14 +1,12 @@
-/* .app {} */
-
-.app--box {
-	background-image: url(./img/intro-page.png);
+.intro--box {
+	background-image: url(../../img/intro-page.png);
 }
 
-.app--box-title {
+.intro--box-title {
 	color: #293264;
 }
 
-.app--box-description {
+.intro--box-description {
 	color: #293264;
 	max-width: 350px;
 	text-align: center;
@@ -16,7 +14,7 @@
 	line-height: 1.5;
 }
 
-.app--box-cta {
+.intro--box-cta {
 	font-family: 'Montserrat', sans-serif;
 	padding: 1rem 3rem;
 	border: none;
